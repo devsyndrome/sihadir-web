@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth','ceklevel:admin,dosen']], function(){
         return view('index');
     });
 });
-//akses admin/BAAK
+//akses admin
 Route::group(['middleware' => ['auth','ceklevel:admin']], function(){
     Route::get('/students', 'berandaController@mahasiswa')->name('mhs');
     Route::get('/lecturers', 'berandaController@dosen')->name('dsn');
