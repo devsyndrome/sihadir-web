@@ -24,15 +24,15 @@ Route::group(['middleware' => ['auth','ceklevel:admin,dosen']], function(){
 });
 //akses admin
 Route::group(['middleware' => ['auth','ceklevel:admin']], function(){
-    Route::get('/students', 'berandaController@mahasiswa')->name('mhs');
-    Route::get('/lecturers', 'berandaController@dosen')->name('dsn');
-    Route::get('/staffs', 'berandaController@baak')->name('baak');
-    Route::get('/schedule', 'berandaController@jadwal')->name('jadwal');
-    Route::get('/class', 'berandaController@kelas')->name('kelas');
-    Route::get('/courses', 'berandaController@matkul')->name('matkul');
-    Route::get('/presence', 'berandaController@presensi')->name('presensi');
-    Route::get('/study-program', 'berandaController@prodi')->name('prodi');
-    Route::get('/classroom', 'berandaController@ruang')->name('ruang');
+    Route::resource('students', 'StudentsController');
+    Route::resource('lecturers', 'LecturersController');
+    Route::resource('staffs', 'StaffsController');
+    Route::resource('schedules', 'SchedulesController');
+    Route::resource('classes', 'ClassesController');
+    Route::resource('courses', 'CoursesController');
+    Route::resource('presences', 'PresencesController');
+    Route::resource('study-programs', 'StudyProgramsController');
+    Route::resource('classrooms', 'ClassroomsController');
 });
 //akses dosen
 Route::group(['middleware' => ['auth','ceklevel:dosen']], function(){
