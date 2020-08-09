@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Staffs;
 
 class StaffsController extends Controller
 {
@@ -11,9 +12,23 @@ class StaffsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $list_staffs = Staffs::all();
+        if($request->ajax()){
+            return datatables()->of($list_staffs)->make(true);
+        }
         return view('staffs');
+
+        //tampil JSON
+        // return response()->json($list_staffs);
+
+        //tampil data tabel tbody dengan  HTML
+        // return view('staffs', compact('list_staffs'));
+
+        //server-side rendering
+        
+
     }
 
     /**
