@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2020 at 10:55 AM
+-- Generation Time: Aug 09, 2020 at 11:40 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -25,143 +25,150 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `baak`
+-- Table structure for table `classes`
 --
 
-CREATE TABLE `baak` (
-  `id_baak` char(11) NOT NULL,
-  `nama` varchar(30) NOT NULL,
-  `tgl_lahir` date NOT NULL,
-  `tempat_lahir` varchar(30) NOT NULL,
-  `jk` varchar(10) NOT NULL,
-  `alamat` text NOT NULL,
-  `kota` varchar(30) NOT NULL,
-  `provinsi` varchar(30) NOT NULL,
-  `negara` varchar(30) NOT NULL,
-  `kode_pos` char(6) NOT NULL,
-  `telp` char(15) NOT NULL,
-  `email` varchar(50) NOT NULL
+CREATE TABLE `classes` (
+  `class_id` int(11) NOT NULL,
+  `prody_id` int(11) NOT NULL,
+  `class_semester` int(11) NOT NULL,
+  `class_name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dosen`
+-- Table structure for table `classrooms`
 --
 
-CREATE TABLE `dosen` (
-  `nip` char(20) NOT NULL,
-  `nama` varchar(30) NOT NULL,
-  `tgl_lahir` date NOT NULL,
-  `tempat_lahir` varchar(30) NOT NULL,
-  `jk` varchar(10) NOT NULL,
-  `alamat` text NOT NULL,
-  `kota` varchar(30) NOT NULL,
-  `provinsi` varchar(30) NOT NULL,
-  `negara` varchar(30) NOT NULL,
-  `kode_pos` char(6) NOT NULL,
-  `telp` char(15) NOT NULL,
-  `email` varchar(50) NOT NULL
+CREATE TABLE `classrooms` (
+  `classroom_id` int(11) NOT NULL,
+  `classroom_name` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jadwal`
+-- Table structure for table `courses`
 --
 
-CREATE TABLE `jadwal` (
-  `id_jadwal` int(11) NOT NULL,
-  `id_ruang` int(11) NOT NULL,
-  `id_matkul` int(11) NOT NULL,
-  `id_kelas` int(11) NOT NULL,
-  `nip` int(11) NOT NULL,
-  `mulai` time NOT NULL,
-  `selesai` time NOT NULL,
-  `hari` varchar(10) NOT NULL
+CREATE TABLE `courses` (
+  `course_id` int(11) NOT NULL,
+  `course_name` varchar(50) NOT NULL,
+  `course_credits` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kelas`
+-- Table structure for table `lecturers`
 --
 
-CREATE TABLE `kelas` (
-  `id_kelas` int(11) NOT NULL,
-  `id_prodi` int(11) NOT NULL,
-  `semester` int(11) NOT NULL,
-  `nama_kelas` varchar(30) NOT NULL
+CREATE TABLE `lecturers` (
+  `lecturer_id` char(20) NOT NULL,
+  `lecturer_name` varchar(30) NOT NULL,
+  `lecturer_birthdate` date NOT NULL,
+  `lecturer_birthplace` varchar(30) NOT NULL,
+  `lecturer_gender` varchar(10) NOT NULL,
+  `lecturer_address` text NOT NULL,
+  `lecturer_city` varchar(30) NOT NULL,
+  `lecturer_province` varchar(30) NOT NULL,
+  `lecture_country` varchar(30) NOT NULL,
+  `lecturer_postalcode` char(6) NOT NULL,
+  `lecturer_phonenumber` char(15) NOT NULL,
+  `lecturer_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mahasiswa`
+-- Table structure for table `presences`
 --
 
-CREATE TABLE `mahasiswa` (
-  `nim` char(11) NOT NULL,
-  `nama` varchar(30) NOT NULL,
-  `tgl_lahir` date NOT NULL,
-  `tempat_lahir` varchar(30) NOT NULL,
-  `jk` varchar(10) NOT NULL,
-  `alamat` text NOT NULL,
-  `kota` varchar(30) NOT NULL,
-  `provinsi` varchar(30) NOT NULL,
-  `negara` varchar(30) NOT NULL,
-  `kode_pos` char(6) NOT NULL,
-  `telp` char(15) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `id_kelas` int(11) NOT NULL
+CREATE TABLE `presences` (
+  `presence_id` int(11) NOT NULL,
+  `schedule_id` int(11) NOT NULL,
+  `students_id` char(11) NOT NULL,
+  `presence_time` time NOT NULL,
+  `presence_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `matkul`
+-- Table structure for table `programstudies`
 --
 
-CREATE TABLE `matkul` (
-  `id_matkul` int(11) NOT NULL,
-  `nama_matkul` varchar(50) NOT NULL,
-  `sks` int(11) NOT NULL
+CREATE TABLE `programstudies` (
+  `prody_id` int(11) NOT NULL,
+  `prody_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `presensi`
+-- Table structure for table `schedules`
 --
 
-CREATE TABLE `presensi` (
-  `id_presensi` int(11) NOT NULL,
-  `id_jadwal` int(11) NOT NULL,
-  `nim` char(11) NOT NULL,
-  `waktu` time NOT NULL,
-  `keterangan` varchar(20) NOT NULL
+CREATE TABLE `schedules` (
+  `schedule_id` int(11) NOT NULL,
+  `classroom_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `schedule_start` time NOT NULL,
+  `schedule_end` time NOT NULL,
+  `schedule_day` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prodi`
+-- Table structure for table `staffs`
 --
 
-CREATE TABLE `prodi` (
-  `id_prodi` int(11) NOT NULL,
-  `nama_prodi` varchar(50) NOT NULL
+CREATE TABLE `staffs` (
+  `staff_id` char(11) NOT NULL,
+  `staff_name` varchar(30) NOT NULL,
+  `staff_birthdate` date NOT NULL,
+  `staff_birthplace` varchar(30) NOT NULL,
+  `staff_gender` varchar(10) NOT NULL,
+  `staff_address` text NOT NULL,
+  `staff_city` varchar(30) NOT NULL,
+  `staff_province` varchar(30) NOT NULL,
+  `staff_country` varchar(30) NOT NULL,
+  `staff_postalcode` char(6) NOT NULL,
+  `staff_phonenumber` char(15) NOT NULL,
+  `staff_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `staffs`
+--
+
+INSERT INTO `staffs` (`staff_id`, `staff_name`, `staff_birthdate`, `staff_birthplace`, `staff_gender`, `staff_address`, `staff_city`, `staff_province`, `staff_country`, `staff_postalcode`, `staff_phonenumber`, `staff_email`) VALUES
+('32131', 'admin', '2020-08-09', 'cirebon', 'laki-laki', 'asdasdasdasd', 'cirebon', 'jawa barat', 'indonesia', '45144', '0832131', 'admin@admin.com');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ruang`
+-- Table structure for table `students`
 --
 
-CREATE TABLE `ruang` (
-  `id_ruang` int(11) NOT NULL,
-  `nama_ruang` varchar(15) NOT NULL
+CREATE TABLE `students` (
+  `student_id` char(11) NOT NULL,
+  `student_name` varchar(30) NOT NULL,
+  `student_birhdate` date NOT NULL,
+  `student_birthplace` varchar(30) NOT NULL,
+  `student_gender` varchar(10) NOT NULL,
+  `student_address` text NOT NULL,
+  `student_city` varchar(30) NOT NULL,
+  `student_province` varchar(30) NOT NULL,
+  `student_country` varchar(30) NOT NULL,
+  `student_postalcode` char(6) NOT NULL,
+  `student_phonenumber` char(15) NOT NULL,
+  `student_email` varchar(50) NOT NULL,
+  `class_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -196,46 +203,46 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `pa
 --
 
 --
--- Indexes for table `baak`
+-- Indexes for table `classes`
 --
-ALTER TABLE `baak`
-  ADD PRIMARY KEY (`id_baak`);
+ALTER TABLE `classes`
+  ADD PRIMARY KEY (`class_id`);
 
 --
--- Indexes for table `jadwal`
+-- Indexes for table `classrooms`
 --
-ALTER TABLE `jadwal`
-  ADD PRIMARY KEY (`id_jadwal`);
+ALTER TABLE `classrooms`
+  ADD PRIMARY KEY (`classroom_id`);
 
 --
--- Indexes for table `kelas`
+-- Indexes for table `courses`
 --
-ALTER TABLE `kelas`
-  ADD PRIMARY KEY (`id_kelas`);
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`course_id`);
 
 --
--- Indexes for table `matkul`
+-- Indexes for table `presences`
 --
-ALTER TABLE `matkul`
-  ADD PRIMARY KEY (`id_matkul`);
+ALTER TABLE `presences`
+  ADD PRIMARY KEY (`presence_id`);
 
 --
--- Indexes for table `presensi`
+-- Indexes for table `programstudies`
 --
-ALTER TABLE `presensi`
-  ADD PRIMARY KEY (`id_presensi`);
+ALTER TABLE `programstudies`
+  ADD PRIMARY KEY (`prody_id`);
 
 --
--- Indexes for table `prodi`
+-- Indexes for table `schedules`
 --
-ALTER TABLE `prodi`
-  ADD PRIMARY KEY (`id_prodi`);
+ALTER TABLE `schedules`
+  ADD PRIMARY KEY (`schedule_id`);
 
 --
--- Indexes for table `ruang`
+-- Indexes for table `staffs`
 --
-ALTER TABLE `ruang`
-  ADD PRIMARY KEY (`id_ruang`);
+ALTER TABLE `staffs`
+  ADD PRIMARY KEY (`staff_id`);
 
 --
 -- Indexes for table `users`
@@ -249,40 +256,40 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `jadwal`
+-- AUTO_INCREMENT for table `classes`
 --
-ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `classes`
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `kelas`
+-- AUTO_INCREMENT for table `classrooms`
 --
-ALTER TABLE `kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `classrooms`
+  MODIFY `classroom_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `matkul`
+-- AUTO_INCREMENT for table `courses`
 --
-ALTER TABLE `matkul`
-  MODIFY `id_matkul` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `courses`
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `presensi`
+-- AUTO_INCREMENT for table `presences`
 --
-ALTER TABLE `presensi`
-  MODIFY `id_presensi` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `presences`
+  MODIFY `presence_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `prodi`
+-- AUTO_INCREMENT for table `programstudies`
 --
-ALTER TABLE `prodi`
-  MODIFY `id_prodi` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `programstudies`
+  MODIFY `prody_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ruang`
+-- AUTO_INCREMENT for table `schedules`
 --
-ALTER TABLE `ruang`
-  MODIFY `id_ruang` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `schedules`
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
