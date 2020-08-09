@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 09, 2020 at 11:40 AM
+-- Generation Time: Aug 09, 2020 at 05:03 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -71,10 +71,6 @@ CREATE TABLE `lecturers` (
   `lecturer_birthplace` varchar(30) NOT NULL,
   `lecturer_gender` varchar(10) NOT NULL,
   `lecturer_address` text NOT NULL,
-  `lecturer_city` varchar(30) NOT NULL,
-  `lecturer_province` varchar(30) NOT NULL,
-  `lecture_country` varchar(30) NOT NULL,
-  `lecturer_postalcode` char(6) NOT NULL,
   `lecturer_phonenumber` char(15) NOT NULL,
   `lecturer_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -134,10 +130,6 @@ CREATE TABLE `staffs` (
   `staff_birthplace` varchar(30) NOT NULL,
   `staff_gender` varchar(10) NOT NULL,
   `staff_address` text NOT NULL,
-  `staff_city` varchar(30) NOT NULL,
-  `staff_province` varchar(30) NOT NULL,
-  `staff_country` varchar(30) NOT NULL,
-  `staff_postalcode` char(6) NOT NULL,
   `staff_phonenumber` char(15) NOT NULL,
   `staff_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -146,8 +138,8 @@ CREATE TABLE `staffs` (
 -- Dumping data for table `staffs`
 --
 
-INSERT INTO `staffs` (`staff_id`, `staff_name`, `staff_birthdate`, `staff_birthplace`, `staff_gender`, `staff_address`, `staff_city`, `staff_province`, `staff_country`, `staff_postalcode`, `staff_phonenumber`, `staff_email`) VALUES
-('32131', 'admin', '2020-08-09', 'cirebon', 'laki-laki', 'asdasdasdasd', 'cirebon', 'jawa barat', 'indonesia', '45144', '0832131', 'admin@admin.com');
+INSERT INTO `staffs` (`staff_id`, `staff_name`, `staff_birthdate`, `staff_birthplace`, `staff_gender`, `staff_address`, `staff_phonenumber`, `staff_email`) VALUES
+('32131', 'admin', '2020-08-09', 'cirebon', 'laki-laki', 'asdasdasdasd', '0832131', 'admin@admin.com');
 
 -- --------------------------------------------------------
 
@@ -161,11 +153,6 @@ CREATE TABLE `students` (
   `student_birhdate` date NOT NULL,
   `student_birthplace` varchar(30) NOT NULL,
   `student_gender` varchar(10) NOT NULL,
-  `student_address` text NOT NULL,
-  `student_city` varchar(30) NOT NULL,
-  `student_province` varchar(30) NOT NULL,
-  `student_country` varchar(30) NOT NULL,
-  `student_postalcode` char(6) NOT NULL,
   `student_phonenumber` char(15) NOT NULL,
   `student_email` varchar(50) NOT NULL,
   `class_id` int(11) NOT NULL
