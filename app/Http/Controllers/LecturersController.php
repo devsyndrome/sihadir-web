@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Lecturers;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class LecturersController extends Controller
 {
@@ -11,8 +14,21 @@ class LecturersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $list_lecturers = lecturers::all();
+        if($request->ajax()){
+            return datatables()->of($list_lecturers)
+            ->addColumn('action', function($data){
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->lecturer_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i></a>';
+                $button .= '&nbsp;&nbsp;';
+                $button .= '<button type="button" name="delete" id="'.$data->lecturer_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>';     
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
         return view('lecturers');
     }
 
@@ -34,7 +50,29 @@ class LecturersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request->id;
+        $post = lecturers::updateOrCreate(['lecturer_id' => $request->id],
+            [
+                'lecturer_name' => $request->name,
+                'lecturer_birthdate' => $request->birthdate,
+                'lecturer_birthplace' => $request->birthplace,
+                'lecturer_gender' => $request->gender,
+                'lecturer_address' => $request->address,
+                'lecturer_phonenumber' => $request->phonenumber,
+                'lecturer_email' => $request->email
+            ]);
+            if (User::where('username', '=', $request->id)->exists()) {
+                // user found
+            }else{
+                return User::create([
+                    'username' => $request->id,
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'level' => 'lecturer',
+                    'password' => Hash::make($request->id),
+                ]);
+            }
+        return response()->json($post);
     }
 
     /**
@@ -45,7 +83,7 @@ class LecturersController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -56,7 +94,9 @@ class LecturersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $where = array('lecturer_id' => $id);
+        $post  = lecturers::where($where)->first();
+        return response()->json($post);
     }
 
     /**
@@ -79,6 +119,8 @@ class LecturersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = lecturers::where('lecturer_id',$id)->delete();
+        User::where('username',$id)->delete();
+        return response()->json($post);
     }
 }
