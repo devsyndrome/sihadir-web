@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Staffs;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class StaffsController extends Controller
 {
@@ -16,7 +18,16 @@ class StaffsController extends Controller
     {
         $list_staffs = Staffs::all();
         if($request->ajax()){
-            return datatables()->of($list_staffs)->make(true);
+            return datatables()->of($list_staffs)
+            ->addColumn('action', function($data){
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->staff_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i> Edit</a>';
+                $button .= '&nbsp;&nbsp;';
+                $button .= '<button type="button" name="delete" id="'.$data->staff_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';     
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
         }
         return view('staffs');
 
@@ -49,7 +60,26 @@ class StaffsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request->id;
+        $post = Staffs::updateOrCreate(['staff_id' => $request->id],
+            [
+                'staff_name' => $request->name,
+                'staff_birthdate' => $request->birthdate,
+                'staff_birthplace' => $request->birthplace,
+                'staff_gender' => $request->gender,
+                'staff_address' => $request->address,
+                'staff_phonenumber' => $request->phonenumber,
+                'staff_email' => $request->email
+            ]);
+            return User::create([
+                'username' => $request->id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'level' => 'admin',
+                'password' => Hash::make($request->id),
+            ]);
+        return response()->json($post);
+        
     }
 
     /**
@@ -71,7 +101,9 @@ class StaffsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $where = array('staff_id' => $id);
+        $post  = Staffs::where($where)->first();
+        return response()->json($post);
     }
 
     /**
@@ -94,6 +126,7 @@ class StaffsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Staffs::where('staff_id',$id)->delete();
+        return response()->json($post);
     }
 }
