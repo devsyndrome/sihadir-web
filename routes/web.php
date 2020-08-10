@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 //bebas akses
-Route::group(['middleware' => ['auth','ceklevel:admin,dosen']], function(){
+Route::group(['middleware' => ['auth','ceklevel:admin,lecturer']], function(){
     Route::get('/', function () {
         return view('index');
     });
@@ -35,7 +35,7 @@ Route::group(['middleware' => ['auth','ceklevel:admin']], function(){
     Route::resource('classrooms', 'ClassroomsController');
 });
 //akses dosen
-Route::group(['middleware' => ['auth','ceklevel:dosen']], function(){
+Route::group(['middleware' => ['auth','ceklevel:lecturer']], function(){
     
 });
 

@@ -20,9 +20,9 @@ class StaffsController extends Controller
         if($request->ajax()){
             return datatables()->of($list_staffs)
             ->addColumn('action', function($data){
-                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->staff_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i> Edit</a>';
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->staff_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i></a>';
                 $button .= '&nbsp;&nbsp;';
-                $button .= '<button type="button" name="delete" id="'.$data->staff_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';     
+                $button .= '<button type="button" name="delete" id="'.$data->staff_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>';     
                 return $button;
             })
             ->rawColumns(['action'])
@@ -71,13 +71,17 @@ class StaffsController extends Controller
                 'staff_phonenumber' => $request->phonenumber,
                 'staff_email' => $request->email
             ]);
-            return User::create([
-                'username' => $request->id,
-                'name' => $request->name,
-                'email' => $request->email,
-                'level' => 'admin',
-                'password' => Hash::make($request->id),
-            ]);
+            if (User::where('username', '=', $request->id)->exists()) {
+                // user found
+            }else{
+                return User::create([
+                    'username' => $request->id,
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'level' => 'admin',
+                    'password' => Hash::make($request->id),
+                ]);
+            }
         return response()->json($post);
         
     }
@@ -127,6 +131,7 @@ class StaffsController extends Controller
     public function destroy($id)
     {
         $post = Staffs::where('staff_id',$id)->delete();
+        User::where('username',$id)->delete();
         return response()->json($post);
     }
 }
