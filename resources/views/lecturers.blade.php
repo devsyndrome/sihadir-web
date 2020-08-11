@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','lecturer')
+@section('title','LECTURERS')
 @section('user','Arie Arbiansyah')
 @push('link-asset')
   <meta name="csrf-token" content="{{ csrf_token() }}">
