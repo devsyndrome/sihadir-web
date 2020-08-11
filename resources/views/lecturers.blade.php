@@ -10,7 +10,7 @@
 @endpush
 @section('content')
 <div class="section-header">
-    <h1>lecturers</h1>
+    <h1>Lecturers</h1>
   </div>
 
   <div class="section-body">
@@ -60,7 +60,7 @@
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">PERHATIAN</h5>
+              <h5 class="modal-title">WARNING</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               </button>
@@ -94,7 +94,7 @@
                         <div class="col-sm-12">
 
                             <div class="form-group">
-                                <label for="id" class="col-sm-12 control-label">lecturer ID</label>
+                                <label for="id" class="col-sm-12 control-label">Lecturer ID</label>
                                 <div class="col-sm-12">
                                     <input type="text" class="form-control" id="id" name="id"
                                         value="" required>
