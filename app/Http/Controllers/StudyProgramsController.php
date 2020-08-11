@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\StudyProgram;
 
 class StudyProgramsController extends Controller
 {
@@ -11,8 +12,21 @@ class StudyProgramsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $list_studyprograms = StudyProgram::all();
+        if($request->ajax()){
+            return datatables()->of($list_studyprograms)
+            ->addColumn('action', function($data){
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->prody_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i></a>';
+                $button .= '&nbsp;&nbsp;';
+                $button .= '<button type="button" name="delete" id="'.$data->prody_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>';     
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
         return view('study-programs');
     }
 
@@ -34,7 +48,11 @@ class StudyProgramsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request->id;
+        $post = studyprogram::updateOrCreate(['prody_id' => $request->id],
+            [
+                'prody_name' => $request->name
+            ]);
     }
 
     /**
@@ -56,7 +74,9 @@ class StudyProgramsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $where = array('prody_id' => $id);
+        $post  = studyprogram::where($where)->first();
+        return response()->json($post);
     }
 
     /**
@@ -79,6 +99,7 @@ class StudyProgramsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = studyprogram::where('prody_id',$id)->delete();
+        return response()->json($post);
     }
 }
