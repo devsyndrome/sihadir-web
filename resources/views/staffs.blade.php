@@ -220,6 +220,7 @@ integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfoo
     //TOMBOL TAMBAH DATA
         //jika tombol-tambah diklik maka
         $('#tombol-tambah').click(function () {
+          $("#id").attr('readonly', false)
             $('#button-simpan').val("create-post"); //valuenya menjadi create-post
             $('#id').val(''); //valuenya menjadi kosong
             $('#form-tambah-edit').trigger("reset"); //mereset semua input dll didalamnya
@@ -268,6 +269,7 @@ integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfoo
         //TOMBOL EDIT DATA PER PEGAWAI DAN TAMPIKAN DATA BERDASARKAN ID PEGAWAI KE MODAL
         //ketika class edit-post yang ada pada tag body di klik maka
         $('body').on('click', '.edit-post', function () {
+          $("#id").attr('readonly', true)
             var data_id = $(this).data('id');
             $.get('staffs/' + data_id + '/edit', function (data) {
                 $('#modal-judul').html("Edit staff");

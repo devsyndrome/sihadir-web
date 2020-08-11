@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
@@ -15,7 +16,9 @@ class cekLevel
      */
     public function handle($request, Closure $next, ...$levels)
     {
-        if(in_array($request->user()->level,$levels)){
+        if($request->user()->level == "student"){
+            Auth::logout();
+        }else if(in_array($request->user()->level,$levels)){
             return $next($request);
         }
         return redirect('/');
