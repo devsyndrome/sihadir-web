@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Courses;
 
 class CoursesController extends Controller
 {
@@ -11,8 +12,21 @@ class CoursesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $list_courses = courses::all();
+        if($request->ajax()){
+            return datatables()->of($list_courses)
+            ->addColumn('action', function($data){
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->course_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i></a>';
+                $button .= '&nbsp;&nbsp;';
+                $button .= '<button type="button" name="delete" id="'.$data->course_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>';     
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
         return view('courses');
     }
 
@@ -34,7 +48,13 @@ class CoursesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request->id;
+        $post = courses::updateOrCreate(['course_id' => $request->id],
+            [
+                'course_name' => $request->name,
+                'course_credits' => $request->credits,
+                
+            ]);
     }
 
     /**
@@ -56,7 +76,9 @@ class CoursesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $where = array('course_id' => $id);
+        $post  = courses::where($where)->first();
+        return response()->json($post);
     }
 
     /**
@@ -79,6 +101,7 @@ class CoursesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = courses::where('course_id',$id)->delete();
+        return response()->json($post);
     }
 }
