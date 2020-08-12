@@ -7,6 +7,7 @@ use App\User;
 use App\Students;
 use App\Classes;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class StudentsController extends Controller
 {
@@ -30,7 +31,8 @@ class StudentsController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        $classes = Classes::orderBy('class_name')->pluck('class_name', 'class_id');
+        $classes = Classes::select("class_id", DB::raw("CONCAT(class_name,'/',class_semester) as full_name"))->orderBy('class_name')->pluck("full_name", 'class_id');
+    
 
         return view('students', compact('class_id', 'classes'));
     }

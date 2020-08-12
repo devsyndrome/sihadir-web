@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Classrooms;
-use Illuminate\Support\Facades\Hash;
 
 class ClassroomsController extends Controller
 {

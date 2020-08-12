@@ -26,6 +26,7 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Class</th>
+                  <th>Semester</th>
                   <th>Birthdate</th>
                   <th>Birthplace</th>
                   <th>Gender</th>
@@ -215,6 +216,7 @@ integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfoo
           {data: 'student_id', name: 'student_id'},
           {data: 'student_name', name: 'student_name'},
           {data: 'classes.class_name', name: 'classes.class_name'},
+          {data: 'classes.class_semester', name: 'classes.class_semester'},
           {data: 'student_birthdate', name: 'student_birthdate'},
           {data: 'student_birthplace', name: 'student_birthplace'},
           {data: 'student_gender', name: 'student_gender'},

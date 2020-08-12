@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Classes;
+use App\StudyProgram;
 
 class ClassesController extends Controller
 {
@@ -11,9 +13,23 @@ class ClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('classes');
+        $list_classes = classes::with('studyprogram')->get();
+        if($request->ajax()){
+            return datatables()->of($list_classes)
+            ->addColumn('action', function($data){
+                $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->class_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="far fa-edit"></i></a>';
+                $button .= '&nbsp;&nbsp;';
+                $button .= '<button type="button" name="delete" id="'.$data->class_id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>';     
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        $prody = StudyProgram::orderBy('prody_name')->pluck('prody_name', 'prody_id');
+        return view('classes', compact('prody_id', 'prody'));
     }
 
     /**
@@ -34,7 +50,14 @@ class ClassesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request->id;
+        $post = classes::updateOrCreate(['class_id' => $request->id],
+            [
+                'prody_id' => $request->prody_id,
+                'class_name' => $request->name,
+                'class_semester' => $request->semester,
+                
+            ]);
     }
 
     /**
@@ -56,7 +79,9 @@ class ClassesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $where = array('class_id' => $id);
+        $post  = classes::where($where)->first();
+        return response()->json($post);
     }
 
     /**
@@ -79,6 +104,7 @@ class ClassesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = classes::where('class_id',$id)->delete();
+        return response()->json($post);
     }
 }
