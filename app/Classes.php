@@ -16,4 +16,8 @@ class Classes extends Model
     {
         return $this->belongsTo('App\StudyProgram', 'prody_id', 'prody_id');
     }
+    public function schedules()
+    {
+        return $this->hasMany('App\Schedules', 'class_id', 'class_id');
+    }
 }
