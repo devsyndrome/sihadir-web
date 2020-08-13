@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title','Home')
-@section('user','Arie Arbiansyah')
+@section('user',Auth::user()->name)
 @section('content')
 <div class="section-header">
     <h1>QR-Generator</h1>
@@ -12,7 +12,7 @@
             </div>
             <div class="card-body">
                 <div class="text-center">
-                    <h1>Schedules <span class="badge badge-primary">Presence Manager</span></h1>
+                    <h1>Schedules <span class="badge badge-primary">Today</span></h1>
                 </div>
                 {{-- {!!QrCodee::size(200)->generate('hai');!!} --}}
                 <table id="Schedules-table" class="table table-striped table-bordered">

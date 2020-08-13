@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title','COURSE')
-@section('user','Arie Arbiansyah')
+@section('user',Auth::user()->name)
 @push('link-asset')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
