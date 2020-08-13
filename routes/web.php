@@ -30,13 +30,13 @@ Route::group(['middleware' => ['auth','ceklevel:admin']], function(){
     Route::resource('schedules', 'SchedulesController');
     Route::resource('classes', 'ClassesController');
     Route::resource('courses', 'CoursesController');
-    Route::resource('presences', 'PresencesController');
+    
     Route::resource('study-programs', 'StudyProgramsController');
     Route::resource('classrooms', 'ClassroomsController');
 });
 //akses dosen
 Route::group(['middleware' => ['auth','ceklevel:lecturer']], function(){
-    
+    Route::resource('presences', 'PresencesController');
 });
 
 

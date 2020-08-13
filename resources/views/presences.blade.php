@@ -3,22 +3,34 @@
 @section('user','Arie Arbiansyah')
 @section('content')
 <div class="section-header">
-    <h1>Welcome</h1>
-  </div>
-
-  <div class="section-body">
+    <h1>QR-Generator</h1>
+</div>
+<div class="section-body">
     <div class="section-body">
         <div class="card">
-          <div class="card-header">
-          </div>
-          <div class="card-body">
-            <div class="text-center">
-            <h1>PRESENSI <span class="badge badge-primary">Attendance Manager</span></h1>
-          </div>
-          <div class="card-footer bg-whitesmoke text-center">
-          <b>Security Computer Network '17 - {{ Auth::user()->level}}</b>
-          </div>
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h1>Schedules <span class="badge badge-primary">Presence Manager</span></h1>
+                </div>
+                {{-- {!!QrCodee::size(200)->generate('hai');!!} --}}
+                <table id="Schedules-table" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Classroom</th>
+                            <th>Course</th>
+                            <th>Class</th>
+                            <th>Lecturer</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Day</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-      </div>  
-  </div>
-@endsection
+    </div>
+    @endsection

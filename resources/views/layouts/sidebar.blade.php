@@ -9,6 +9,7 @@
     <ul class="sidebar-menu">
         <li class="menu-header">Dashboard</li>
         <li class="nav-item dropdown @if(Request::segment(1) == 'students' OR Request::segment(1) == 'lecturers' OR Request::segment(1) == 'staffs') active @endif">
+          @if(Auth::user()->level == "admin")
           <a href="#" class="nav-link has-dropdown"><i class="fas fa-user"></i> <span>Master</span></a>
           <ul class="dropdown-menu">
             <li class="@if(Request::segment(1) == 'students') active @endif"><a class="nav-link" href="{{url('students')}}">Students</a></li>
@@ -27,6 +28,7 @@
             <li class="@if(Request::segment(1) == 'courses') active @endif"><a class="nav-link" href="{{url('courses')}}">Courses</a></li>
           </ul>
         </li>
+        @endif
         <li class="nav-item dropdown @if(Request::segment(1) == 'presences') active @endif">
           <a href="#" class="nav-link has-dropdown"><i class="fas fa-pencil-ruler"></i> <span>Presence Manager</span></a>
           <ul class="dropdown-menu">
