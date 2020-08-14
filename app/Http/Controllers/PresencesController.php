@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Classes;
+use App\Lecturers;
+use App\Classrooms;
+use App\Courses;
 use App\Schedules;
+use Illuminate\Support\Facades\Auth;    
 
 class PresencesController extends Controller
 {
@@ -14,7 +19,7 @@ class PresencesController extends Controller
      */
     public function index(Request $request)
     {
-        $list_schedules = Schedules::with('classrooms','classes','lecturers','courses')->get();
+        $list_schedules = Schedules::with('classrooms','classes','lecturers','courses')->where('schedules.lecturer_id',Auth::user()->username)->get();
         if($request->ajax()){
             return datatables()->of($list_schedules)
             ->addColumn('action', function($data){
