@@ -10,7 +10,7 @@
 @endpush
 @section('content')
 <div class="section-header">
-    <h1>QR-Generator</h1>
+    <h1>Courses</h1>
 </div>
 <div class="section-body">
     <div class="section-body">
@@ -19,28 +19,10 @@
             </div>
             <div class="card-body">
                 <div class="text-center">
-                    <h1>Schedules <span class="badge badge-primary">Today</span></h1>
-                <h3>{{Carbon\Carbon::today()->toDateString()}}</h3>
-                <h5 id="time"></span></h5>
+                    <h1>Schedules <span class="badge badge-primary">QR-Generator</span></h1>
+                <h3>{{Carbon\Carbon::now()->format('l')}}</h3>
                 
 
-<script type="text/javascript">
-  function showTime() {
-    var date = new Date(),
-        utc = new Date(Date.UTC(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate(),
-          date.getHours(),
-          date.getMinutes(),
-          date.getSeconds()
-        ));
-
-    document.getElementById('time').innerHTML = utc.toLocaleTimeString();
-  }
-
-  setInterval(showTime, 1000);
-</script>
                 </div>
                 {{-- {!!QrCodee::size(200)->generate('hai');!!} --}}
                 <table id="Schedules-table" class="table table-striped table-bordered">
