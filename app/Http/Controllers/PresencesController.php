@@ -26,10 +26,11 @@ class PresencesController extends Controller
             
             return datatables()->of($list_schedules)
             ->addColumn('action', function($data){
+                $date = Carbon::now()->format('Y-m-d');
                 $day = Carbon::now()->format('l');
                 $time = Carbon::now()->format('H:i');
                 if($data->schedule_day == $day AND $data->schedule_start <= $time AND $data->schedule_end >= $time){
-                    $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->schedule_id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post"><i class="fa fa-qrcode ">Generate</i></a>';
+                    $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->schedule_id.'" data-original-title="Edit" class="btn btn-info btn-sm generate"><i class="fa fa-qrcode ">Generate</i></a>';
                 }else{
                     // $button = '<button class="edit btn btn-warning btn-sm edit-post"><i class="fa fa-qrcode ">No Schedule</i></button>';
                     $button = '<button class="btn btn-icon icon-center btn-warning"><i class="fas fa-times"></i></button>';
@@ -83,7 +84,8 @@ class PresencesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $date = Carbon::now()->format('Y-m-d');
+        return view('generator', compact('id','date'));
     }
 
     /**

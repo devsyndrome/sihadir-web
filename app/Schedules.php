@@ -24,4 +24,8 @@ class Schedules extends Model
     {
         return $this->belongsTo('App\Lecturers', 'lecturer_id', 'lecturer_id');
     }
+    public function generators()
+    {
+        return $this->hasMany('App\Generators', 'schedule_id', 'schedule_id');
+    }
 }

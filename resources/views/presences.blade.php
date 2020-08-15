@@ -104,5 +104,13 @@ integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfoo
                 ]
             });
         });
+
+        $('body').on('click', '.generator', function () {
+            var data_id = $(this).data('id');
+            $.get('presences/' + data_id + '/edit', function (data) {
+            })
+        });
+
+        
     </script>
     @endpush

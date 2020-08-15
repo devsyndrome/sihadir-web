@@ -29,11 +29,14 @@
           </ul>
         </li>
         @endif
-        <li class="nav-item dropdown @if(Request::segment(1) == 'presences') active @endif">
+        @if(Auth::user()->level == "lecturer")
+        <li class="nav-item dropdown @if(Request::segment(1) == 'presences' OR Request::segment(1) == 'generator') active @endif">
           <a href="#" class="nav-link has-dropdown"><i class="fas fa-pencil-ruler"></i> <span>Presence Manager</span></a>
           <ul class="dropdown-menu">
+            <li class="@if(Request::segment(1) == 'generator') active @endif"><a class="nav-link" href="{{url('generator')}}">Generator</a></li>
             <li class="@if(Request::segment(1) == 'presences') active @endif"><a class="nav-link" href="{{url('presences')}}">Presences</a></li>
           </ul>
         </li>
+        @endif
   </aside>
 </div>
