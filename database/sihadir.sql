@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2020 at 08:14 AM
+-- Generation Time: Aug 15, 2020 at 02:26 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -87,6 +87,38 @@ CREATE TABLE `courses` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`course_id`, `course_name`, `course_credits`, `created_at`, `updated_at`) VALUES
+(1, 'Informatics Project', 4, '2020-08-12 06:35:20', '2020-08-11 23:35:20'),
+(2, 'Network Security', 3, '2020-08-11 23:35:28', '2020-08-11 23:35:28'),
+(3, 'English #6', 2, '2020-08-11 23:36:18', '2020-08-11 23:36:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `generators`
+--
+
+CREATE TABLE `generators` (
+  `generator_id` int(11) NOT NULL,
+  `schedule_id` int(11) NOT NULL,
+  `generator_date` date NOT NULL,
+  `generator_status` varchar(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `generators`
+--
+
+INSERT INTO `generators` (`generator_id`, `schedule_id`, `generator_date`, `generator_status`, `created_at`, `updated_at`) VALUES
+(1, 6, '2020-08-15', 'ss', '2020-08-15 08:14:39', '0000-00-00 00:00:00'),
+(7, 5, '2020-08-15', 'ok', '2020-08-15 12:24:54', '2020-08-15 12:24:54');
+
 -- --------------------------------------------------------
 
 --
@@ -112,7 +144,7 @@ CREATE TABLE `lecturers` (
 
 INSERT INTO `lecturers` (`lecturer_id`, `lecturer_name`, `lecturer_birthdate`, `lecturer_birthplace`, `lecturer_gender`, `lecturer_address`, `lecturer_phonenumber`, `lecturer_email`, `created_at`, `updated_at`) VALUES
 ('101010', 'Kusnadi', '1988-11-11', 'cirebon', 'Male', 'Perum', '0812123334', 'dosen2@cic.ac.id', '2020-08-10 12:05:47', '2020-08-10 05:05:47'),
-('123321', 'dosen', '1988-12-12', 'cirebon', 'Female', 'edaasd', '3123123', 'dsda97@gmail.com', '2020-08-10 05:14:16', '2020-08-10 05:14:16');
+('123321', 'Ms. Yuni', '1988-12-12', 'cirebon', 'Female', 'edaasd', '3123123', 'dsda97@gmail.com', '2020-08-12 10:09:54', '2020-08-12 03:09:54');
 
 -- --------------------------------------------------------
 
@@ -122,7 +154,7 @@ INSERT INTO `lecturers` (`lecturer_id`, `lecturer_name`, `lecturer_birthdate`, `
 
 CREATE TABLE `presences` (
   `presence_id` int(11) NOT NULL,
-  `schedule_id` int(11) NOT NULL,
+  `generator_id` int(11) NOT NULL,
   `students_id` char(11) NOT NULL,
   `presence_time` time NOT NULL,
   `presence_status` varchar(20) NOT NULL,
@@ -173,6 +205,17 @@ CREATE TABLE `schedules` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`schedule_id`, `classroom_id`, `course_id`, `class_id`, `lecturer_id`, `schedule_start`, `schedule_end`, `schedule_day`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, 2, 101010, '09:00:00', '10:00:00', 'Monday', '2020-08-15 07:52:04', '2020-08-15 07:52:04'),
+(2, 1, 3, 1, 123321, '14:00:00', '15:00:00', 'Monday', '2020-08-15 07:50:53', '2020-08-15 07:50:53'),
+(3, 1, 3, 3, 123321, '14:30:00', '15:30:00', 'Monday', '2020-08-12 02:57:55', '2020-08-12 02:57:55'),
+(5, 1, 2, 1, 101010, '18:00:00', '19:30:00', 'Saturday', '2020-08-15 12:04:11', '2020-08-15 12:04:11'),
+(6, 1, 1, 3, 101010, '12:00:00', '15:22:00', 'Saturday', '2020-08-15 08:20:34', '2020-08-15 08:20:34');
 
 -- --------------------------------------------------------
 
@@ -285,6 +328,12 @@ ALTER TABLE `courses`
   ADD PRIMARY KEY (`course_id`);
 
 --
+-- Indexes for table `generators`
+--
+ALTER TABLE `generators`
+  ADD PRIMARY KEY (`generator_id`);
+
+--
 -- Indexes for table `presences`
 --
 ALTER TABLE `presences`
@@ -329,7 +378,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `classrooms`
@@ -341,7 +390,13 @@ ALTER TABLE `classrooms`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `generators`
+--
+ALTER TABLE `generators`
+  MODIFY `generator_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `presences`
@@ -359,7 +414,7 @@ ALTER TABLE `programstudies`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
