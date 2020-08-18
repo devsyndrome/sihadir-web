@@ -39,7 +39,7 @@ class GeneratorController extends Controller
                 $button = 'empty';
             }
         }else{
-            $schedules = Schedules::with('generators','classrooms','classes','lecturers','courses')->join('generators', 'generators.schedule_id', '=', 'schedules.schedule_id')->where('schedules.lecturer_id','=',Auth::user()->username,'AND')->where('schedules.schedule_start','<=',$time,'AND')->where('schedules.schedule_end','>=',$time,'AND')->where('generators.generator_date','=',$date,'OR')->where('generators.generator_status','=','scan')->get();
+            $schedules = Schedules::with('generators','classrooms','classes','lecturers','courses')->join('generators', 'generators.schedule_id', '=', 'schedules.schedule_id')->where('schedules.lecturer_id','=',Auth::user()->username,'AND')->where('schedules.schedule_start','<=',$time,'AND')->where('schedules.schedule_end','>=',$time,'AND')->where('generators.generator_date','=',$date)->get();
         }
         
         return view('generator',compact('schedules','button','data'));

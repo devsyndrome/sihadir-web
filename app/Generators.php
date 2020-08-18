@@ -12,4 +12,8 @@ class Generators extends Model
     {
         return $this->belongsTo('App\Schedules', 'schedule_id', 'schedule_id');
     }
+    public function presences()
+    {
+        return $this->belongsTo('App\Presences', 'generator_id', 'generator_id');
+    }
 }

@@ -31,19 +31,19 @@
                             <li>{{$item->classrooms->classroom_name}}</li>
                         @endforeach --}}
                         @if ($schedules == "0")
-                        @if ($button == "scan")
-                        @if ($data != "0")
-                        @foreach ($data as $items)
-                        <h3> {{$items->classes->class_name}}/{{$items->classes->class_semester}} -
-                            {{$items->courses->course_name}} - start now!</h3>
-                        @endforeach
-                        <a href="javascript:void(0)" class="btn btn-info" id="generate"><i
-                                class="far fa-edit">Generate</i></a>
-                        <hr>
-                        @endif
-                        @else
-                        <h3>No Schedule!</h3>
-                        @endif
+                            @if ($button == "scan")
+                                @if ($data != "0")
+                                    @foreach ($data as $items)
+                                    <h3> {{$items->classes->class_name}}/{{$items->classes->class_semester}} -
+                                        {{$items->courses->course_name}} - start now!</h3>
+                                    @endforeach
+                                    <a href="javascript:void(0)" class="btn btn-info" id="generate"><i
+                                            class="far fa-edit">Generate</i></a>
+                                    <hr>
+                                @endif
+                            @else
+                            <h3>No Schedule!</h3>
+                            @endif
                         @else
                         @foreach ($schedules as $item)
                         {{-- <div class="idgen" id="idgen" ></div> --}}
@@ -54,7 +54,7 @@
                         @else
                         <input id="idgen" type="hidden" value="0" />
                         @endif --}}
-                        @php
+                        {{-- @php
                         function encrypt_decrypt($action, $string)
                         {
                         $output = false;
@@ -92,23 +92,26 @@
                         //
 
                         $plain_txt = "$item->generator_id";
-                        echo "Plain Text = $plain_txt\n <br>";
+                        // echo "Plain Text = $plain_txt\n <br>";
 
                         $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
-                        echo "Encrypted Text = $encrypted_txt\n <br>";
+                        // echo "Encrypted Text = $encrypted_txt\n <br>";
 
                         $decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
-                        echo "Decrypted Text = $decrypted_txt\n <br>";
+                        // echo "Decrypted Text = $decrypted_txt\n <br>";
 
                         if ($plain_txt === $decrypted_txt)
-                        echo "SUCCESS";
+                        // echo "SUCCESS";
                         else
                         echo "FAILED";
 
                         echo "\n";
 
                         ?>
-                        @endphp
+                        @endphp --}}
+                        {{$time = Carbon\Carbon::now()}}
+                        {{$times = $time->addSeconds(10)}}
+                        {{$times->format('H:i:s')}}
                         <input id="idgen" type="hidden" value="{{$item->generator_id}}" />
                         <input id="text" type="hidden" />
                         <div class="d-flex justify-content-center">
@@ -133,6 +136,11 @@
                                     <th>Classroom</th>
                                     <td>:</td>
                                     <td>{{$item->classrooms->classroom_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Class</th>
+                                    <td>:</td>
+                                    <td>{{$item->classes->class_name}}</td>
                                 </tr>
                                 <tr>
                                     <th>Time</th>
