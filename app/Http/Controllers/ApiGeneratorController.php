@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Presences;
 use App\Generators;
-use App\Schedules;
+use App\Students;
+use App\Schedus;
 use Validator;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ApiGeneratorController extends Controller
 {
@@ -66,55 +68,75 @@ class ApiGeneratorController extends Controller
         //     ];
         //     return response()->json($response, 404);
         // }
+        $username = $request->username;
         $id = Str::beforeLast($request->userscan, '+');
-        $timescan = Str::afterLast($request->userscan, '+');
+        $min = Str::afterLast($request->userscan, '+');
         $datenow = Carbon::now();
-        $addsecond = $datenow->addSecond(10);
+        $addsecond = $datenow->addSecond(15);
         $max = $addsecond->format('H:i:s');
-        $min = Carbon::now()->format('H:i:s');
-        if($timescan >= $min AND $timescan <= $max ){
-            if(Generators::where('generator_id', $id)->first() === null){
-                $presences = Presences::create([
-                    'schedule_id' => $request->id,
-                    'generator_date' => $date,
-                    'generator_status' => 'ok',
-                    ]);
-                $data = $presences->toArray();
-                if($presences){
-                    $response = [
-                        'success' => true,
-                        'data' => $data,
-                        'message' => 'Presence success.'
-                    ];
+        $timescan = Carbon::now()->format('H:i:s');
+        $scannerclass = Students::find($username);
+        $date = Carbon::now()->format('Y-m-d');
+        if ($scannerclass != null) {
+            // foreach ($scannerclass as $items){
+                    var_dump ($scannerclass);
+                    if (Generators::with('schedules')
+                    ->join('schedules', 'schedules.schedule_id', '=', 'generators.schedule_id')
+                    ->where('generators.generator_id','=',$id,'AND')
+                    ->where('schedules.class_id','=',$scannerclass['class_id'])->first() != null) {
+                        if($timescan >= $min AND $timescan <= $max ){
+                            if(Presences::where('generator_id','=', $id,'AND')
+                                ->where('student_id','=',$username)
+                                ->first() === null){
+                                $presences = Presences::create([
+                                    'generator_id' => $id,
+                                    'student_id' => $username,
+                                    'presence_time' => $timescan,
+                                    'presence_status' => 'present',
+                                    ]);
+                                $data = $presences->toArray();
+                                if($presences){
+                                    $response = [
+                                        'success' => true,
+                                        'data' => $data,
+                                        'message' => 'Presence success.'
+                                    ];
+                                    return response()->json($response, 201);
+                                }else{
+                                    $response = [
+                                        'success' => false,
+                                        'data' => '0',
+                                        'message' => 'Presence failed.'
+                                    ];
+                                    return response()->json($response, 400);
+                                }
+                            }else{
+                                $response = [
+                                    'success' => false,
+                                    'data' => '0',
+                                    'message' => 'You already presence.'
+                                ];
+                                return response()->json($response, 406);
+                            }   
+                        }else{
+                            $response = [
+                                'success' => false,
+                                'data' => '0',
+                                'message' => 'QR Expired.'
+                            ];
+                            return response()->json($response, 403);
+                        }
+                    }else{
+                        $response = [
+                            'success' => false,
+                            'data' => '0',
+                            'message' => 'Is not your class.'
+                        ];
+                        return response()->json($response, 401);
+                    }
+            // }
             
-                    return response()->json($response, 201);
-                }else{
-                    $response = [
-                        'success' => false,
-                        'data' => '0',
-                        'message' => 'Presence failed.'
-                    ];
-                    return response()->json($response, 400);
-                }
-            }else{
-                $response = [
-                    'success' => false,
-                    'data' => '0',
-                    'message' => 'You already presence.'
-                ];
-                return response()->json($response, 400);
-            }
-            
-        }else{
-            $response = [
-                'success' => false,
-                'data' => '0',
-                'message' => 'Is not your class.'
-            ];
-            return response()->json($response, 400);
         }
-        
-        
     }
 
     /**
@@ -125,26 +147,26 @@ class ApiGeneratorController extends Controller
      */
     public function show($id)
     {
-        $presences = Generators::find($id);
-        $data = $book->toArray();
+        // $presences = Generators::find($id);
+        // $data = $presences->toArray();
 
-        if (is_null($presences)) {
-            $response = [
-                'success' => false,
-                'data' => 'Empty',
-                'message' => 'Data not found.'
-            ];
-            return response()->json($response, 404);
-        }
+        // if (is_null($presences)) {
+        //     $response = [
+        //         'success' => false,
+        //         'data' => 'Empty',
+        //         'message' => 'Data not found.'
+        //     ];
+        //     return response()->json($response, 404);
+        // }
 
 
-        $response = [
-            'success' => true,
-            'data' => $data,
-            'message' => 'Data retrieved successfully.'
-        ];
+        // $response = [
+        //     'success' => true,
+        //     'data' => $data,
+        //     'message' => 'Data retrieved successfully.'
+        // ];
 
-        return response()->json($response, 200);
+        // return response()->json($response, 200);
     }
 
     /**

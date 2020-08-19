@@ -109,9 +109,6 @@
 
                         ?>
                         @endphp --}}
-                        {{$time = Carbon\Carbon::now()}}
-                        {{$times = $time->addSeconds(10)}}
-                        {{$times->format('H:i:s')}}
                         <input id="idgen" type="hidden" value="{{$item->generator_id}}" />
                         <input id="text" type="hidden" />
                         <div class="d-flex justify-content-center">
@@ -182,7 +179,7 @@
                             if (document.getElementById("qrcode") == null) {}
                             var qrcode = new QRCode(document.getElementById("qrcode"), {
                                 width: 300,
-                                height: 250,
+                                height: 300,
                             });
 
                             function makeCode() {
@@ -212,7 +209,7 @@
                                 function () {
                                     setInterval(function () {
                                         makeCode();
-                                    }, 10000);
+                                    }, 15000);
                                 });
                         </script>
                         @endforeach

@@ -25,8 +25,21 @@ class GeneratorController extends Controller
         $day = Carbon::now()->format('l');
         $time = Carbon::now()->format('H:i');
         // $list_schedules = Schedules::with('classrooms','classes','lecturers','courses')->where('schedules.lecturer_id',Auth::user()->username)->get();
-        $cek = Schedules::with('generators','classrooms','classes','lecturers','courses')->join('generators', 'generators.schedule_id', '=', 'schedules.schedule_id')->where('schedules.lecturer_id','=',Auth::user()->username,'AND')->where('schedules.schedule_start','<=',$time,'AND')->where('schedules.schedule_end','>=',$time,'AND')->where('generators.generator_date','=',$date,'AND')->where('schedules.schedule_day','=',$day,'OR')->where('generators.generator_status','=','scan')->first();
-        $list_schedules = Schedules::with('classrooms','classes','lecturers','courses')->where('schedules.lecturer_id','=',Auth::user()->username,'AND')->where('schedules.schedule_start','<=',$time,'AND')->where('schedules.schedule_end','>=',$time,'AND')->where('schedules.schedule_day','=',$day)->first();
+        $cek =  Schedules::with('generators','classrooms','classes','lecturers','courses')
+                ->join('generators', 'generators.schedule_id', '=', 'schedules.schedule_id')
+                ->where('schedules.lecturer_id','=',Auth::user()->username,'AND')
+                ->where('schedules.schedule_start','<=',$time,'AND')
+                ->where('schedules.schedule_end','>=',$time,'AND')
+                ->where('generators.generator_date','=',$date,'AND')
+                ->where('schedules.schedule_day','=',$day,'OR')
+                ->where('generators.generator_status','=','scan')
+                ->first();
+        $list_schedules = Schedules::with('classrooms','classes','lecturers','courses')
+                ->where('schedules.lecturer_id','=',Auth::user()->username,'AND')
+                ->where('schedules.schedule_start','<=',$time,'AND')
+                ->where('schedules.schedule_end','>=',$time,'AND')
+                ->where('schedules.schedule_day','=',$day)
+                ->first();
         if($cek === null){
             $schedules = "0";
             if($list_schedules != null){
