@@ -68,8 +68,40 @@ class ApiGeneratorController extends Controller
         //     ];
         //     return response()->json($response, 404);
         // }
+        function encrypt_decrypt($action, $string)
+        {
+            $output = false;
+            $encrypt_method = "AES-256-CBC";
+            $secret_key = 'Proyek Teknik Informatika';
+            $secret_iv = 'TI SCN 2017102008';
+            // hash
+            $key = hash('sha256', $secret_key);
+            // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a
+            // warning
+            $iv = substr(hash('sha256', $secret_iv), 0, 16);
+        if ($action == 'encrypt')
+        {
+            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+            $output = base64_encode($output);
+        }
+        else
+        {
+        if ($action == 'decrypt')
+        {
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        }
+        }
+            return $output;
+        }
+                        //
+                        // usage
+                        //
+                            // $plain_txt = "$item->generator_id";
+                            // echo "Plain Text = $plain_txt\n <br>";
+                            // $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
+                            // echo "Encrypted Text = $encrypted_txt\n <br>";
+        $id = encrypt_decrypt('decrypt', Str::beforeLast($request->userscan, '+'));
         $username = $request->username;
-        $id = Str::beforeLast($request->userscan, '+');
         $min = Str::afterLast($request->userscan, '+');
         $datenow = Carbon::now();
         $addsecond = $datenow->addSecond(15);

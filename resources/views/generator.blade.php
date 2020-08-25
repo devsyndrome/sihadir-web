@@ -54,63 +54,50 @@
                         @else
                         <input id="idgen" type="hidden" value="0" />
                         @endif --}}
-                        {{-- @php
+                        @php
                         function encrypt_decrypt($action, $string)
                         {
-                        $output = false;
-
-                        $encrypt_method = "AES-256-CBC";
-                        $secret_key = 'Proyek Teknik Informatika';
-                        $secret_iv = 'TI SCN 2017102008';
-
-                        // hash
-                        $key = hash('sha256', $secret_key);
-
-                        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a
-                        // warning
-                        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-
+                            $output = false;
+                            $encrypt_method = "AES-256-CBC";
+                            $secret_key = 'Proyek Teknik Informatika';
+                            $secret_iv = 'TI SCN 2017102008';
+                            // hash
+                            $key = hash('sha256', $secret_key);
+                            // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a
+                            // warning
+                            $iv = substr(hash('sha256', $secret_iv), 0, 16);
                         if ($action == 'encrypt')
                         {
-                        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-                        $output = base64_encode($output);
+                            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+                            $output = base64_encode($output);
                         }
                         else
                         {
                         if ($action == 'decrypt')
                         {
-                        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+                            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
                         }
                         }
-
                         return $output;
                         }
-
-
                         //
                         // usage
                         //
-
-                        $plain_txt = "$item->generator_id";
-                        // echo "Plain Text = $plain_txt\n <br>";
-
-                        $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
-                        // echo "Encrypted Text = $encrypted_txt\n <br>";
-
-                        $decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
-                        // echo "Decrypted Text = $decrypted_txt\n <br>";
-
+                            $plain_txt = "$item->generator_id";
+                            // echo "Plain Text = $plain_txt\n <br>";
+                            $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
+                            // echo "Encrypted Text = $encrypted_txt\n <br>";
+                            $decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
+                            // echo "Decrypted Text = $decrypted_txt\n <br>";
                         if ($plain_txt === $decrypted_txt)
-                        // echo "SUCCESS";
+                        {echo "SUCCESS";}
                         else
-                        echo "FAILED";
-
-                        echo "\n";
-
-                        ?>
-                        @endphp --}}
-                        <input id="idgen" type="hidden" value="{{$item->generator_id}}" />
+                            {   echo "FAILED";
+                                echo "\n";}
+                        @endphp
+                        <input id="idgen" type="hidden" value="{{$encrypted_txt}}" />
                         <input id="text" type="hidden" />
+                        {{-- <input class="form-control-range" type="range" id="size" value="200" min="50" max="650" title="QR Code Size"> --}}
                         <div class="d-flex justify-content-center">
                             <div id="qrcode"></div>
                         </div>
@@ -147,8 +134,14 @@
                             </table>
                         </div>
                         <script>
-                            function currentTime() {
+                            // let slider = document.querySelector('[type=range]')
+                            // let div = document.querySelector('#qrcode')
 
+                            // slider.addEventListener('input', e => {
+                            // div.style.width = e.target.value + 'px'
+                            // div.style.height = e.target.value + 'px'
+                            // })
+                            function currentTime() {
                                 var idgen = document.getElementById('idgen').getAttribute('value');
                                 var date = new Date(); /* creating object of Date class */
                                 var hour = date.getHours();
@@ -165,7 +158,6 @@
                                     sec; /* adding time to the div */
                                 var t = setTimeout(currentTime, 1000); /* setting timer */
                             }
-
                             function updateTime(k) {
                                 /* appending 0 before time elements if less than 10 */
                                 if (k < 10) {
@@ -174,27 +166,22 @@
                                     return k;
                                 }
                             }
-
                             currentTime();
                             if (document.getElementById("qrcode") == null) {}
                             var qrcode = new QRCode(document.getElementById("qrcode"), {
                                 width: 300,
                                 height: 300,
                             });
-
                             function makeCode() {
                                 var elText = document.getElementById("text");
-
                                 if (!elText.value) {
                                     alert("Input a text");
                                     elText.focus();
                                     return;
                                 }
-
                                 qrcode.makeCode(elText.value);
                             }
                             makeCode();
-
                             // $("#text").
                             // 	on("blur", function () {
                             // 		makeCode();
@@ -204,7 +191,6 @@
                             // 			makeCode();
                             // 		}
                             //     });
-
                             $(document).ready(
                                 function () {
                                     setInterval(function () {
@@ -337,7 +323,6 @@
                 submitHandler: function (form) {
                     var actionType = $('#tombol-simpan').val();
                     $('#tombol-simpan').html('Generating..');
-
                     $.ajax({
                         data: $('#form-tambah-edit')
                             .serialize(), //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
@@ -356,10 +341,8 @@
                             //     message: '{{ Session('
                             //     success ')}}',
                             //     position: 'bottomRight'
-
                         },
                         error: function (data) { //jika error tampilkan error pada console
-
                             console.log('Error:', data);
                             $('#tombol-simpan').html('Error');
                         }

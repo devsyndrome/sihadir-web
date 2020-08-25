@@ -26,7 +26,7 @@
             <div class="login-brand">
               <img src="../assets/img/cic.png" alt="logo" width="200" class="shadow-light rounded-square">
               <hr>
-            <h5>SiHadir <span class="badge badge-primary">Attendance Manager</span></h5>
+            <h5>SiHadir <span class="badge badge-primary">Presences Manager</span></h5>
             </div>
 
             <div class="card card-primary">
@@ -36,7 +36,7 @@
                 <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                     @csrf
               <div class="form-group">
-                <label for="Username">NIP / ID</label>
+                <label for="Username">ID</label>
                 <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" tabindex="1" required autofocus>
                     @error('username')
                         <span class="invalid-feedback" role="alert">
