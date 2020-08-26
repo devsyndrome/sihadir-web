@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth','ceklevel:admin']], function(){
 Route::group(['middleware' => ['auth','ceklevel:lecturer']], function(){
     Route::resource('presences', 'PresencesController');
     Route::resource('generator', 'GeneratorController');
+    Route::resource('reports', 'ReportController');
 });
 
 

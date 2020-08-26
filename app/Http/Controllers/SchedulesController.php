@@ -8,6 +8,7 @@ use App\Lecturers;
 use App\Classrooms;
 use App\Courses;
 use App\Schedules;
+use Illuminate\Support\Facades\DB;
 
 class SchedulesController extends Controller
 {
@@ -32,7 +33,8 @@ class SchedulesController extends Controller
             ->make(true);
         }
         $classrooms = Classrooms::orderBy('classroom_name')->pluck('classroom_name', 'classroom_id');
-        $classes = Classes::orderBy('class_name')->pluck('class_name', 'class_id');
+        // $classes = Classes::orderBy('class_name')->pluck('class_name', 'class_id');
+        $classes = Classes::select("class_id", DB::raw("CONCAT(class_name,'/',class_semester) as full_name"))->orderBy('class_name')->pluck("full_name", 'class_id');   
         $lecturers = Lecturers::orderBy('lecturer_name')->pluck('lecturer_name', 'lecturer_id');
         $courses = Courses::orderBy('course_name')->pluck('course_name', 'course_id');
         return view('schedules', compact('classrooms','classes','lecturers','courses'));

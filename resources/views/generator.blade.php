@@ -31,19 +31,19 @@
                             <li>{{$item->classrooms->classroom_name}}</li>
                         @endforeach --}}
                         @if ($schedules == "0")
-                            @if ($button == "scan")
-                                @if ($data != "0")
-                                    @foreach ($data as $items)
-                                    <h3> {{$items->classes->class_name}}/{{$items->classes->class_semester}} -
-                                        {{$items->courses->course_name}} - start now!</h3>
-                                    @endforeach
-                                    <a href="javascript:void(0)" class="btn btn-info" id="generate"><i
-                                            class="far fa-edit">Generate</i></a>
-                                    <hr>
-                                @endif
-                            @else
-                            <h3>No Schedule!</h3>
-                            @endif
+                        @if ($button == "scan")
+                        @if ($data != "0")
+                        @foreach ($data as $items)
+                        <h3> {{$items->classes->class_name}}/{{$items->classes->class_semester}} -
+                            {{$items->courses->course_name}} - start now!</h3>
+                        @endforeach
+                        <a href="javascript:void(0)" class="btn btn-info" id="generate"><i
+                                class="far fa-edit">Generate</i></a>
+                        <hr>
+                        @endif
+                        @else
+                        <h3>No Schedule!</h3>
+                        @endif
                         @else
                         @foreach ($schedules as $item)
                         {{-- <div class="idgen" id="idgen" ></div> --}}
@@ -57,25 +57,25 @@
                         @php
                         function encrypt_decrypt($action, $string)
                         {
-                            $output = false;
-                            $encrypt_method = "AES-256-CBC";
-                            $secret_key = 'Proyek Teknik Informatika';
-                            $secret_iv = 'TI SCN 2017102008';
-                            // hash
-                            $key = hash('sha256', $secret_key);
-                            // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a
-                            // warning
-                            $iv = substr(hash('sha256', $secret_iv), 0, 16);
+                        $output = false;
+                        $encrypt_method = "AES-256-CBC";
+                        $secret_key = 'Proyek Teknik Informatika';
+                        $secret_iv = 'TI SCN 2017102008';
+                        // hash
+                        $key = hash('sha256', $secret_key);
+                        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a
+                        // warning
+                        $iv = substr(hash('sha256', $secret_iv), 0, 16);
                         if ($action == 'encrypt')
                         {
-                            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-                            $output = base64_encode($output);
+                        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+                        $output = base64_encode($output);
                         }
                         else
                         {
                         if ($action == 'decrypt')
                         {
-                            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+                        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
                         }
                         }
                         return $output;
@@ -83,33 +83,32 @@
                         //
                         // usage
                         //
-                            $plain_txt = "$item->generator_id";
-                            // echo "Plain Text = $plain_txt\n <br>";
-                            $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
-                            // echo "Encrypted Text = $encrypted_txt\n <br>";
-                            $decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
-                            // echo "Decrypted Text = $decrypted_txt\n <br>";
-                        if ($plain_txt === $decrypted_txt)
-                        {echo "SUCCESS";}
-                        else
-                            {   echo "FAILED";
-                                echo "\n";}
+                        $plain_txt = "$item->generator_id";
+                        // echo "Plain Text = $plain_txt\n <br>";
+                        $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
+                        // echo "Encrypted Text = $encrypted_txt\n <br>";
+                        $decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
+                        // echo "Decrypted Text = $decrypted_txt\n <br>";
+                        // $getmin = Str::afterLast('hdjakhsd+16:50:10', '+');
+                        // $min = Carbon\Carbon::createFromFormat('H:i:s', $getmin)->toDateTimeString();
+                        // $max = Carbon\Carbon::createFromFormat('H:i:s', $getmin)->addSecond(15);
+                        // $now = Carbon\Carbon::now();
+                        // echo "$min<br>";
+                        // echo "$max<br>";
+                        // echo "$now<br>";
                         @endphp
+
+                        <input id="idgenerator" type="hidden" value="{{$item->generator_id}}" />
                         <input id="idgen" type="hidden" value="{{$encrypted_txt}}" />
                         <input id="text" type="hidden" />
+
                         {{-- <input class="form-control-range" type="range" id="size" value="200" min="50" max="650" title="QR Code Size"> --}}
                         <div class="d-flex justify-content-center">
                             <div id="qrcode"></div>
                         </div>
-
-                        <div class="text-left">
+                        <hr>
+                        <div class="d-flex justify-content-start text-left">
                             <table>
-                                <tr>
-                                    <th>Lecturer</th>
-                                    <td>:</td>
-                                    <td>{{$item->lecturers->lecturer_name}}</h5>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <th>Course</th>
                                     <td>:</td>
@@ -124,7 +123,7 @@
                                 <tr>
                                     <th>Class</th>
                                     <td>:</td>
-                                    <td>{{$item->classes->class_name}}</td>
+                                    <td>{{$item->classes->class_name}}/{{$item->classes->class_semester}}</td>
                                 </tr>
                                 <tr>
                                     <th>Time</th>
@@ -133,6 +132,7 @@
                                 </tr>
                             </table>
                         </div>
+                        <hr>
                         <script>
                             // let slider = document.querySelector('[type=range]')
                             // let div = document.querySelector('#qrcode')
@@ -149,7 +149,7 @@
                                 var sec = date.getSeconds();
                                 var midday = "AM";
                                 midday = (hour >= 12) ? "PM" : "AM"; /* assigning AM/PM */
-                                hour = (hour == 0) ? 12 : ((hour > 12) ? (hour - 12) :
+                                hour = (hour == 0) ? 24 : ((hour > 24) ? (hour - 24) :
                                     hour); /* assigning hour in 12-hour format */
                                 hour = updateTime(hour);
                                 min = updateTime(min);
@@ -158,6 +158,7 @@
                                     sec; /* adding time to the div */
                                 var t = setTimeout(currentTime, 1000); /* setting timer */
                             }
+
                             function updateTime(k) {
                                 /* appending 0 before time elements if less than 10 */
                                 if (k < 10) {
@@ -172,6 +173,7 @@
                                 width: 300,
                                 height: 300,
                             });
+
                             function makeCode() {
                                 var elText = document.getElementById("text");
                                 if (!elText.value) {
@@ -281,6 +283,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- AKHIR MODAL -->
     @endpush
     @push('page-script')
@@ -311,6 +315,11 @@
             $('#modal-judul').html("QR-Generator"); //valuenya tambah pegawai baru
             $('#tambah-edit-modal').modal('show'); //modal tampil
         });
+        $('#students').click(function () {
+            $('#modal-judul').html("Student Presences"); //valuenya tambah pegawai baru
+            $('#details').modal('show'); //
+        });
+
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -318,6 +327,7 @@
                 }
             });
         });
+
         if ($("#form-tambah-edit").length > 0) {
             $("#form-tambah-edit").validate({
                 submitHandler: function (form) {

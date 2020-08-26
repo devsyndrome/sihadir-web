@@ -35,6 +35,7 @@
           <ul class="dropdown-menu">
             <li class="@if(Request::segment(1) == 'generator') active @endif"><a class="nav-link" href="{{url('generator')}}">Generator</a></li>
             <li class="@if(Request::segment(1) == 'presences') active @endif"><a class="nav-link" href="{{url('presences')}}">Presences</a></li>
+            {{-- <li class="@if(Request::segment(1) == 'reports') active @endif"><a class="nav-link" href="{{url('reports')}}">Reports</a></li> --}}
           </ul>
         </li>
         @endif

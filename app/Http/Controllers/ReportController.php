@@ -14,7 +14,7 @@ use App\Students;
 use Illuminate\Support\Facades\Auth;    
 use Carbon\Carbon;
 
-class PresencesController extends Controller
+class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +23,8 @@ class PresencesController extends Controller
      */
     public function index(Request $request)
     {
-        $list_schedules = Generators::with('schedules','presences')
+        $list_schedules = Generators::with('schedules','presences')  
+        ->selectRaw('COUNT(presences.student_id) AS total')      
         ->leftJoin('schedules', 'schedules.schedule_id', '=', 'generators.schedule_id')
         ->leftJoin('presences', 'presences.generator_id', '=', 'generators.generator_id')
         ->leftJoin('students', 'students.student_id', '=', 'presences.student_id')
@@ -31,15 +32,15 @@ class PresencesController extends Controller
         ->leftJoin('classes', 'classes.class_id', '=', 'schedules.class_id')
         ->leftJoin('lecturers', 'lecturers.lecturer_id', '=', 'schedules.lecturer_id')
         ->leftJoin('courses', 'courses.course_id', '=', 'schedules.course_id')
-        ->where('presences.presence_id','<>','NULL')
+        ->groupBy('presences.generator_id')
+        ->where('schedules.lecturer_id','=',Auth::user()->username)
         ->get();
         
         if($request->ajax()){
-            
             return datatables()->of($list_schedules)
             ->make(true);
         }
-        return view('presences');
+        return view('reports');
     }
 
     /**
@@ -66,10 +67,10 @@ class PresencesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Generators  $generators
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Generators $generators)
     {
         //
     }
@@ -77,23 +78,22 @@ class PresencesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Generators  $generators
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Generators $generators)
     {
-        $date = Carbon::now()->format('Y-m-d');
-        return view('generator', compact('id','date'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Generators  $generators
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Generators $generators)
     {
         //
     }
@@ -101,10 +101,10 @@ class PresencesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Generators  $generators
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Generators $generators)
     {
         //
     }

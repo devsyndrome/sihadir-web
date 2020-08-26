@@ -102,11 +102,10 @@ class ApiGeneratorController extends Controller
                             // echo "Encrypted Text = $encrypted_txt\n <br>";
         $id = encrypt_decrypt('decrypt', Str::beforeLast($request->userscan, '+'));
         $username = $request->username;
-        $min = Str::afterLast($request->userscan, '+');
-        $datenow = Carbon::now();
-        $addsecond = $datenow->addSecond(15);
-        $max = $addsecond->format('H:i:s');
-        $timescan = Carbon::now()->format('H:i:s');
+        $getmin = Str::afterLast($request->userscan, '+');
+        $min = Carbon::createFromFormat('H:i:s', $getmin)->toDateTimeString();
+        $max = Carbon::createFromFormat('H:i:s', $getmin)->addSecond(15);
+        $timescan = Carbon::now();
         $scannerclass = Students::find($username);
         $date = Carbon::now()->format('Y-m-d');
         if ($scannerclass != null) {

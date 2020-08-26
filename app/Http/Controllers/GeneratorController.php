@@ -54,7 +54,7 @@ class GeneratorController extends Controller
         }else{
             $schedules = Schedules::with('generators','classrooms','classes','lecturers','courses')->join('generators', 'generators.schedule_id', '=', 'schedules.schedule_id')->where('schedules.lecturer_id','=',Auth::user()->username,'AND')->where('schedules.schedule_start','<=',$time,'AND')->where('schedules.schedule_end','>=',$time,'AND')->where('generators.generator_date','=',$date)->get();
         }
-        
+
         return view('generator',compact('schedules','button','data'));
     }
 
@@ -93,7 +93,8 @@ class GeneratorController extends Controller
      */
     public function show($id)
     {
-        //
+        $details = students::with('presences')
+        ->where('presenceses.generator_id', $id)->get();
     }
 
     /**
